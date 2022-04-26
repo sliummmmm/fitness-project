@@ -13,6 +13,11 @@ class Recordview extends React.Component{
         this.state = {};
     };
 
+    OnExerciseSubmit(){
+        console.log("Enter a exercise");
+        console.log(process.env.REACT_APP_RAPID_API_HOST);
+    }
+
     OnOpenDropdown(){
         console.log("Drop down clicked");
         const axios = require("axios");
@@ -20,8 +25,8 @@ class Recordview extends React.Component{
           method: 'GET',
           url: 'https://exercisedb.p.rapidapi.com/exercises',
           headers: {
-            'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
-            'X-RapidAPI-Key': '2c642fac8bmsh081e9c9bb0b3d75p13dccdjsn5e11433853a3'
+            'X-RapidAPI-Host': process.env.REACT_APP_RAPID_API_HOST,
+            'X-RapidAPI-Key': process.env.REACT_APP_RAPID_API_KEY
           }
         };
         
@@ -41,7 +46,7 @@ class Recordview extends React.Component{
                     <Button
                         buttonType="ui primary button"
                         buttonText="Add"
-                        buttonAction=""
+                        buttonAction={this.OnExerciseSubmit}
                     />
             </div>
         );
