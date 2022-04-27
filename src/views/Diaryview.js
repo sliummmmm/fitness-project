@@ -14,28 +14,11 @@ class Diaryview extends React.Component{
 
     componentDidMount(){
         const getDiaries = async () => {
-            const diary = await getDocs(collection(db,"diaries"));
-            this.setState({diaries: diary.docs.map((doc)=>({...doc.data()}))});
+            const data = await getDocs(collection(db,"diaries"));
+            const diaries = data.docs.map((doc)=>({...doc.data()}));
+            this.setState(diaries.map((diary)=>(this.state.diaries.push(diary))));
         };
-
         getDiaries();
-    }
-
-    listDiaries(){
-
-        return(
-            <div className="ui card">
-            <div className="content">
-                <div className="header">Cute Dog</div>
-                <div className="meta">
-                    <span>2 days ago</span>
-                    <a>Animals</a>
-                </div>
-                <div>
-                </div>
-            </div>
-        </div>
-        );
     }
 
     //TO-DO make new diary entry modal
@@ -72,11 +55,29 @@ class Diaryview extends React.Component{
                 </div>
                 {/* TO-DO render diary contents */}
                 <div>
-                    {this.listDiaries()}
+                    {
+                        this.state.diaries.map((diary,index)=>{
+                            return(
+                                <div className="ui card">
+                                    <div className="content">
+                                        <div className="header">{diary.Title}</div>
+                                        <div className="meta">
+                                            <span>2 days ago</span>
+                                            <a>From User: {diary.UserID}</a>
+                                        </div>
+                                        <div>
+                                            {diary.Content}
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </div>
         );
     }
 }
+
 
 export default Diaryview;
