@@ -1,7 +1,6 @@
 import React from "react";
 import {db} from '../firebase';
-import {collection, getDocs, addDoc, deleteDoc, doc} from 'firebase/firestore';
-import { async } from '@firebase/util';
+import { doc} from 'firebase/firestore';
 import faker from '@faker-js/faker';
 
 
@@ -16,7 +15,7 @@ class Profileview extends React.Component{
 
     componentDidMount = async (id) => {
         const userDoc = doc(db, "users", id)
-        // console.log(userDoc);
+        console.log(userDoc);
         // const data = await getDocs(userDoc)
         // console.log(data);
     }
@@ -25,7 +24,7 @@ class Profileview extends React.Component{
         return(
             <div className="ui card">
                 <div className="image">
-                <img src={faker.image.avatar()}/>
+                <img src={faker.image.avatar()} alt="avatar"/>
                 </div>
                 <div className="content">
                     <a className="header">#User</a>

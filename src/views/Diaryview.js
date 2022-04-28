@@ -3,7 +3,6 @@ import {db} from '../firebase';
 import {collection, getDocs, addDoc, deleteDoc, doc} from 'firebase/firestore';
 import Form from '../components/Form';
 import Button from '../components/Button';
-import { async } from '@firebase/util';
 
 class Diaryview extends React.Component{
 
@@ -23,7 +22,7 @@ class Diaryview extends React.Component{
         }
       }
 
-    async componentDidMount(){
+    componentDidMount=async()=>{
         const data = await getDocs(collection(db,"diaries"));
         const diaries = data.docs.map((doc)=>({...doc.data(),id: doc.id}));
         this.setState(diaries.map((diary)=>(this.state.diaries.push(diary))));
@@ -34,12 +33,13 @@ class Diaryview extends React.Component{
 
     }
 
-    async onSubmitDiary(){
+    onSubmitDiary=async()=>{
         await addDoc(collection(db,"diaries"), {Content: this.state.content, Title: this.state.title, UserID: this.state.userId, PostOn: this.state.currentDate});
         window.location.reload(false);
+        console.log("Clicked?");
     }
 
-    async deleteDiary(id){
+    deleteDiary=async(id)=>{
         const userDoc = doc(db, "diaries", id);
         await deleteDoc(userDoc);
         window.location.reload(false);
@@ -68,9 +68,9 @@ class Diaryview extends React.Component{
                 {/* TO-DO render diary contents */}
                 <div className="ui stackable four column grid" style={{width:'1280px'}}>
                     {
-                        this.state.diaries.map((diary)=>{
+                        this.state.diaries.map((diary,index)=>{
                             return(
-                                <div className="four wide column" >
+                                <div className="four wide column" key={index}>
                                     <div className="ui card" style={{width: '300px'}}>
                                         <div className="content">
                                             <div className="header">{diary.Title}</div>

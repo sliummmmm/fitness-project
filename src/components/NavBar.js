@@ -1,6 +1,7 @@
 import React from 'react'
+import { Menuitems } from '../utilities/Menuitem';
 
-export class NavBar extends React.Component {
+class NavBar extends React.Component {
     onHoverOver(e){
         e.target.style.background='Gainsboro';
     }
@@ -12,10 +13,13 @@ export class NavBar extends React.Component {
     render() {
         return (
             <div className="ui four item menu">
-                <a className="item" onMouseOver={this.onHoverOver} onMouseOut={this.onHoverOut}>Record</a>
-                <a className="item" onMouseOver={this.onHoverOver} onMouseOut={this.onHoverOut}>Report</a>
-                <a className="item" onMouseOver={this.onHoverOver} onMouseOut={this.onHoverOut}>Diary</a>
-                <a className="item" onMouseOver={this.onHoverOver} onMouseOut={this.onHoverOut}>Profile</a>
+                {
+                    Menuitems.map((menuitem,index)=>{
+                        return(
+                            <a className="item" key={index} onMouseOver={this.onHoverOver} onMouseOut={this.onHoverOut} onClick={this.props.clickAction} value={menuitem.value} href={menuitem.url}>{menuitem.title}</a>
+                        )
+                    })
+                }
             </div>
         )
     }

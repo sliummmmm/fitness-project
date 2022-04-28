@@ -4,36 +4,42 @@ class Dropdown extends React.Component{
     constructor(props){
         super(props);
 
-        this.state = {
-            dropDownContent: this.props.dropDownContent
-        };
-    };
+        this.state={
 
-    //Done today: haven't finish the dropdown function
-    componentDidMount(){
-        console.log(this.state.dropDownContent);
+        }
+    }
+
+    handleSelection = (e)=>{
+        this.props.onSelection(e.target.value);
     }
 
     render(){
         return(
-            <div className="ui fluid search selection dropdown" >
-                  <input type="hidden" name="exercise"/>
-                    <i className="dropdown icon"></i>
-                    <div className="default text">Select Exercise</div>
-                    <div className="menu">
-                {
-                    this.state.dropDownContent.map(
-                        (res)=>{
-                            return(
-                                <div className="item" data-value={res.id}>{res.name}</div>
-                            )
-                        }
-                    )
-                }
-                </div>
-            </div>
-        );
-    };
-};
+            <select className="ui search dropdown" onChange={this.handleSelection} >
+                <option value=''>select a exercise</option>
+                {this.props.options.map((option,index)=>{return <option key={index} value={option.id} >{option.name}</option>})}
+            </select>
+        )
+    }
+}
+
+// const Dropdown=(props)=>{
+
+//     const optionList = props.options.map((option,index)=>{
+//         return <option key={index} value={option.id} >{option.name}</option>
+//     });
+
+//     handleSelection = (e) =>{
+//         this.props.onSelection
+//     }
+//     //Done today: haven't finish the dropdown function
+
+//         return(
+//             <select className="ui search dropdown" onChange={handleSelection} >
+//                 <option value=''>select a exercise</option>
+//                 {optionList}
+//             </select>
+//         )
+// };
 
 export default Dropdown;

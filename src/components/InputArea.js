@@ -10,7 +10,11 @@ class InputArea extends React.Component{
     render(){
         return(
             <div className="ui input">
-                <input type="text" placeholder="Search..."/>
+                <input 
+                    type="text" 
+                    placeholder={this.props.placeHolder}
+                    onChange={this.props.inputAction}
+                    value={this.props.inputContentValue}/>
             </div>
         );
     };

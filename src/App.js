@@ -6,11 +6,25 @@ import Profileview from './views/Profileview.js';
 
 class App extends React.Component{
 
+    constructor(props){
+        super(props);
+
+        this.state={
+            pageLoad: 0
+        }
+    }
+
+    NavAction(){
+
+    }
+
     render(){
         return (
             <div>
                 <div>
-                    <NavBar/>
+                    <NavBar
+                        clickAction={this.NavAction}
+                    />
                 </div>
                 <div>
                     {/* <Diaryview/> */}

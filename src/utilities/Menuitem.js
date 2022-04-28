@@ -1,0 +1,22 @@
+export const Menuitems = [
+    {
+        title:'Record',
+        value:'rc',
+        url:'#'
+    },
+    {
+        title:'Report',
+        value:'re',
+        url:'#'
+    },
+    {
+        title:'Diary',
+        value:'di',
+        url:'#'
+    },
+    {
+        title:'Profile',
+        value:'pr',
+        url:'#'
+    }
+]
