@@ -13,8 +13,9 @@ class App extends React.Component{
                     <NavBar/>
                 </div>
                 <div>
-                    <Diaryview/>
-                    {/* <Recordview/> */}
+                    {/* <Diaryview/> */}
+                    <Recordview/>
+                    {/* <Profileview/> */}
                 </div>
             </div>
         );

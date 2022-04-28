@@ -7,19 +7,21 @@ import Dropdown from '../components/Dropdown';
 import Form from '../components/Form';
 
 class Recordview extends React.Component{
+
     constructor(props){
         super(props);
 
-        this.state = {};
-    };
+        this.state = {
+            exerciseList:[]
+        }
+    }
 
     OnExerciseSubmit(){
         console.log("Enter a exercise");
-        console.log(process.env.REACT_APP_RAPID_API_HOST);
     }
 
-    OnOpenDropdown(){
-        console.log("Drop down clicked");
+    componentDidMount = async () =>{
+
         const axios = require("axios");
         const options = {
           method: 'GET',
@@ -30,24 +32,27 @@ class Recordview extends React.Component{
           }
         };
         
-        axios.request(options).then(function (response) {
-            console.log(response.data);
-        }).catch(function (error) {
-            console.error(error);
-        });}
+        const response=await axios.request(options);
+
+        this.setState(response.data.map((res)=>(this.state.exerciseList.push(res))));
+
+        console.log(this.state.exerciseList);
+
+    }
 
     render(){
         return(
             <div>
-                    <Dropdown 
-                        dropDownAction={this.OnOpenDropdown}
-                    />
-                    <InputArea/>
-                    <Button
-                        buttonType="ui primary button"
-                        buttonText="Add"
-                        buttonAction={this.OnExerciseSubmit}
-                    />
+                <Dropdown 
+                    dropDownAction={this.OnOpenDropdown}
+                    dropDownContent={this.state.exerciseList}
+                />
+                <InputArea/>
+                <Button
+                    buttonType="ui primary button"
+                    buttonText="Add"
+                    buttonAction={this.OnExerciseSubmit}
+                />
             </div>
         );
     }

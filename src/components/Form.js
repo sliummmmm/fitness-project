@@ -11,7 +11,10 @@ class Form extends React.Component{
     render(){
         return(
             <div>
-                <div className="ui form" style={{width:"80%", margin:"20px"}}>
+                <div className="ui form" style={{width:"50%", margin:"20px"}}>
+                    <div>
+                       From User: {this.props.userID}
+                    </div>
                     <div className="field">
                         <label>Content</label>
                         <textarea 
