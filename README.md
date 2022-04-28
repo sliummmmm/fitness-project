@@ -1,5 +1,5 @@
 A fitness record web-app can record exercises, view exercise reports, write workout diarys and login to store user profiles.
 
-Up-to-date: finished the diary function, working on record exercise function, will record the workout and repitation
+Up-to-date: finished record exercise  and linked the records to database. 
 
-TO-DO: fix dropdown box
+TO-DO: add days of week option bar to record function
