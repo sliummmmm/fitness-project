@@ -15,7 +15,7 @@ class Dropdown extends React.Component{
 
     render(){
         return(
-            <select className="ui search dropdown" onChange={this.handleSelection} >
+            < select className="ui search dropdown" onChange={this.handleSelection} >
                 <option value=''>select a exercise</option>
                 {this.props.options.map((option,index)=>{return <option key={index} value={option.id} >{option.name}</option>})}
             </select>
