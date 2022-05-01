@@ -57,11 +57,13 @@ class Recordview extends React.Component{
                 <InputArea
                     placeHolder="rep(s)"
                     inputAction={(e) => this.setState({ exerciseRep: e.target.value })}
+                    inputType="text" 
                 />
                 <div><i className="x icon"></i></div>
                 <InputArea
                     placeHolder="group(s)"
                     inputAction={(e) => this.setState({ groupNumber: e.target.value })}
+                    inputType="text" 
                 />
                 <Button
                     buttonType="ui primary button"

@@ -1,23 +1,22 @@
 import React from 'react';
+import { useRef } from 'react'
 
-class InputArea extends React.Component{
-    constructor(props){
-        super(props);
+const InputArea = (props) => {
 
-        this.state = {};
-    }
+    return(
+        <div className="ui input">
+            <input 
+                type={props.inputType}
+                placeholder={props.placeHolder}
+                onChange={props.inputAction}
+                value={props.inputContentValue}
+                ref={props.inputRef}
+                />
 
-    render(){
-        return(
-            <div className="ui input">
-                <input 
-                    type="text" 
-                    placeholder={this.props.placeHolder}
-                    onChange={this.props.inputAction}
-                    value={this.props.inputContentValue}/>
-            </div>
-        );
-    };
-};
+        </div>
+    )
+}
+
+
 
 export default InputArea;

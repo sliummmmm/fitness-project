@@ -1,49 +1,148 @@
 import React from "react";
-import {db} from '../firebase';
-import { doc} from 'firebase/firestore';
-import faker from '@faker-js/faker';
+import { useState, useRef, useEffect} from 'react';
+import { db } from '../firebase';
+import { signUp, useAuth, logIn, logOut} from "../firebase";
+import { collection, doc, docs, getDocs, where } from 'firebase/firestore';
+import Profilecard from "../components/Profilecard";
+import InputArea from "../components/InputArea";
+import Button from "../components/Button";
+import { FirebaseError } from "firebase/app";
 
 
-class Profileview extends React.Component{
-    constructor(props){
-        super(props);
+const Profileview = () =>{
 
-        this.state = {
-            userInfo: []
-        };
-    };
+    const emailRef = useRef();
+    const passwdRef = useRef();
+    const logInEmail = useRef();
+    const logInPass = useRef();
+    const [loading, setLoading] = useState();
+    const [user, setUser]= useState([]);
 
-    componentDidMount = async (id) => {
-        const userDoc = doc(db, "users", id)
-        console.log(userDoc);
-        // const data = await getDocs(userDoc)
-        // console.log(data);
-    }
+    // username:'',
+    // dob:'',
+    // weight:'',
+    // height:'',
+    // email:'',
+    // uid:''
 
-    render(){
+    const currentUser = useAuth();
+
+
+    useEffect(()=>{
+        const getUser = async ()=>{
+            await getDocs(collection(db,"users"), where("uid", "==", currentUser?.uid)).then(
+                (data)=>{
+                    setUser(user =>({...user, username:'1'}))
+                }
+            );
+
+            console.log(user);
+        }
+
+        getUser();
+
+    },[]);
+
+    const loadProfileCard = () =>{
         return(
-            <div className="ui card">
-                <div className="image">
-                <img src={faker.image.avatar()} alt="avatar"/>
-                </div>
-                <div className="content">
-                    <a className="header">#User</a>
-                <div className="meta">
-                    <span className="date">#Start date</span>
-                </div>
-                <div className="description">
-                    #Description
-                </div>
-                </div>
-                <div className="extra content">
-                    <a>
-                        <i className="user icon"></i>
-                        #Target
-                    </a>
-                </div>
-            </div>
-        );
+            <Profilecard
+                userData={user}
+            />
+        )
     }
-};
+
+    const handleRegister = async () => {
+
+        setLoading(true);
+        try{
+            await signUp(emailRef.current.value, passwdRef.current.value);
+        }
+        catch{
+           alert('Error!');
+        }
+        setLoading(false);
+    }
+
+    const handleLogIn= async () => {
+
+        setLoading(true);
+        try{
+            await logIn(logInEmail.current.value, logInPass.current.value);
+        }
+        catch(err){
+           alert(err);
+        }
+        setLoading(false);
+    }
+
+    const handleLogOut = async () => {
+        setLoading(true);
+        try{
+            await logOut();
+        }
+        catch(err){
+            alert('Error!');
+        }
+        setLoading(false);
+    }
+
+
+    return(
+        <div>
+            <div>Login as: { currentUser?.uid }</div>
+            <div className="login">
+                <InputArea
+                    placeHolder="Email"
+                    inputType="text"
+                    inputRef={logInEmail}
+                />
+                <InputArea
+                    placeHolder="Password"
+                    inputType="password"
+                    inputRef={logInPass}
+                />
+                <Button
+                    buttonType="ui primary button"
+                    buttonText="Login"
+                    buttonAction={handleLogIn}
+                    loadingCondition={ loading || currentUser }
+                />
+                <Button
+                    buttonType="ui red button"
+                    buttonText="Logout"
+                    buttonAction={handleLogOut}
+                    loadingCondition={ loading || !currentUser }
+                />
+            </div>
+            <div className="register">
+                <InputArea
+                        placeHolder="Enter Email to register"
+                        inputType="text"
+                        inputRef={emailRef}
+                    />
+                    <InputArea
+                        placeHolder="Enter a Password"
+                        inputType="password"
+                        inputRef={passwdRef}
+                    />
+                    <Button
+                        buttonType="ui primary button"
+                        buttonText="Register"
+                        buttonAction={handleRegister}
+                        loadingCondition={loading || currentUser }
+                    />
+            </div>
+            <div className="profile">
+                {loadProfileCard()}
+            </div>
+        </div>
+    );
+}
+
+
+
+
+
+
 
 export default Profileview;
