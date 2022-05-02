@@ -12,7 +12,6 @@ const InputArea = (props) => {
                 value={props.inputContentValue}
                 ref={props.inputRef}
                 />
-
         </div>
     )
 }
