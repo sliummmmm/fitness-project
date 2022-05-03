@@ -1,7 +1,8 @@
 import React from 'react'
 import { Menuitems } from '../utilities/Menuitem';
+import { Link } from 'react-router-dom';
 
-const NavBar = (props) =>{
+const NavBar = () =>{
 
     const onHoverOver=(e)=>{
         e.target.style.background='Gainsboro';
@@ -16,7 +17,14 @@ const NavBar = (props) =>{
             {
                 Menuitems.map((menuitem,index)=>{
                     return(
-                        <a className="item" key={index} onMouseOver={onHoverOver} onMouseOut={onHoverOut} onClick={props.clickAction} value={menuitem.value} href={menuitem.url}>{menuitem.title}</a>
+                        <Link
+                            key={index} 
+                            className="item" 
+                            onMouseOver={onHoverOver} 
+                            onMouseOut={onHoverOut} 
+                            to={menuitem.url}>
+                            {menuitem.title}
+                            </Link>
                     )
                 })
             }

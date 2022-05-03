@@ -1,22 +1,18 @@
 export const Menuitems = [
     {
         title:'Record',
-        value:'rc',
-        url:'#'
+        url:'/record'
     },
     {
         title:'Report',
-        value:'re',
-        url:'#'
+        url:'/report'
     },
     {
         title:'Diary',
-        value:'di',
-        url:'#'
+        url:'/diary'
     },
     {
         title:'Profile',
-        value:'pr',
-        url:'#'
+        url:'/profile'
     }
 ]

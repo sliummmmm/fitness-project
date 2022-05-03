@@ -8,20 +8,23 @@ const Form = (props) => {
                 <div>
                    From User: {props.userID}
                 </div>
-                <div className="field">
-                    <label>Content</label>
-                    <textarea 
-                        onChange={props.inputContentAction}
-                        value={props.inputContentValue}
-                    >
-                    </textarea>
-                </div>
+                <br/>
                 <div className="field">
                     <label>Title</label>
                     <textarea 
                         rows="2" 
                         onChange={props.inputTitleAction}
                         value={props.inputTitleValue}
+                        ref={props.inputTitleRef}
+                    >
+                    </textarea>
+                </div>
+                <div className="field">
+                    <label>Content</label>
+                    <textarea 
+                        onChange={props.inputContentAction}
+                        value={props.inputContentValue}
+                        ref={props.inputContentRef}
                     >
                     </textarea>
                 </div>

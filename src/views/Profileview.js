@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useRef } from 'react';
-import { signUp, useAuth, logIn, logOut} from "../firebase";
+import { signUp, logIn, logOut, useAuth } from "../firebase";
 import Profilecard from "../components/Profilecard";
 import InputArea from "../components/InputArea";
 import Button from "../components/Button";
@@ -50,10 +50,8 @@ const Profileview = () =>{
         setLoading(false);
     }
 
-
     return(
         <div>
-            {/* <div className="indicator">{currentUser?.uid}</div> */}
             <div className="login">
                 {!currentUser&&
                 <>
@@ -113,11 +111,5 @@ const Profileview = () =>{
         </div>
     );
 }
-
-
-
-
-
-
 
 export default Profileview;

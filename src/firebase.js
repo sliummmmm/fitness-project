@@ -3,7 +3,7 @@ import { useState, useEffect} from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import "firebase/auth"
+import "firebase/auth";
 
 const app = initializeApp({
     apiKey: process.env.REACT_APP_FIRBASE_API_KEY,
@@ -15,14 +15,26 @@ const app = initializeApp({
     measurementId: process.env.REACT_APP_FIRBASE_MEASUREMENT_ID
 });
 
-const auth = getAuth();
+export const auth = getAuth();
 
 export const useAuth = () => {
-    const [ currentUser, serCurrentUser ] = useState();
+    const [ currentUser, setCurrentUser ] = useState();
 
     useEffect(()=>{
-        const unsub = onAuthStateChanged(auth, user => serCurrentUser(user));
-        return unsub;
+        const authStatus = () =>{
+            const unsub = onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    setCurrentUser(user);
+                }else{
+                    setCurrentUser(null);
+                }
+            });
+
+            return unsub;
+        }
+
+        return authStatus();
+
     },[])
 
     return currentUser;

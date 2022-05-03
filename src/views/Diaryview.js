@@ -1,105 +1,48 @@
-import React from 'react';
-import {db} from '../firebase';
-import {collection, getDocs, addDoc, deleteDoc, doc} from 'firebase/firestore';
+import React, { useState, useEffect, useRef }from 'react';
+import {db, useAuth} from '../firebase';
+import {collection, getDocs, addDoc, deleteDoc, doc, where, query} from 'firebase/firestore';
+import { getAuth } from "firebase/auth"
 import Form from '../components/Form';
 import Button from '../components/Button';
+import DiaryCard from '../components/DiaryCard';
 
-class Diaryview extends React.Component{
+const Diaryview = () =>{
 
-    constructor(props) {
-        super(props);
-   
-        const today = new Date(),
+    const contentRef = useRef();
+    const titleRef = useRef();
+    const [currentDate, setCurrentDate]=useState(new Date());
+    const [user, setUser]=useState();
+
+    const currentUser = useAuth();
     
-        date = today.toUTCString();
-    
-        this.state = {
-            content: '',
-            title: '',
-            userId: '000',
-            currentDate: date,
-            diaries: []
-        }
-      }
-
-    componentDidMount=async()=>{
-        const data = await getDocs(collection(db,"diaries"));
-        const diaries = data.docs.map((doc)=>({...doc.data(),id: doc.id}));
-        this.setState(diaries.map((diary)=>(this.state.diaries.push(diary))));
-    }
-
-    //TO-DO new entry event
-    onCreateNewEntry(){
-
-    }
-
-    onSubmitDiary=async()=>{
-        await addDoc(collection(db,"diaries"), {Content: this.state.content, Title: this.state.title, UserID: this.state.userId, PostOn: this.state.currentDate});
-        window.location.reload(false);
-        console.log("Clicked?");
-    }
-
-    deleteDiary=async(id)=>{
-        const userDoc = doc(db, "diaries", id);
-        await deleteDoc(userDoc);
-        window.location.reload(false);
-    }   
-
-    render(){
-        return(
-            <div style={{margin:'5%'}}>
-                <div>
-                    <Button 
-                        buttonType="positive ui button" 
-                        buttonText="Create New Diary" 
-                        buttonAction={this.onCreateNewEntry}
-                    />
-                </div>
-                <div>
-                    <Form
-                        inputContentAction={(e) => this.setState({ content: e.target.value })}
-                        inputContentValue={this.state.content}
-                        inputTitleAction={(e) => this.setState({ title: e.target.value })}
-                        inputTitleValue={this.state.title}
-                        userID={this.state.userId}
-                        submitAction={this.onSubmitDiary}
-                    />
-                </div>
-                {/* TO-DO render diary contents */}
-                <div className="ui stackable four column grid" style={{width:'1280px'}}>
-                    {
-                        this.state.diaries.map((diary,index)=>{
-                            return(
-                                <div className="four wide column" key={index}>
-                                    <div className="ui card" style={{width: '300px'}}>
-                                        <div className="content">
-                                            <div className="header">{diary.Title}</div>
-                                            <div className="meta">
-                                                <span>{diary.PostOn}</span>
-                                                <a>From User: {diary.UserID}</a>
-                                            </div>
-                                            <div>
-                                                {diary.Content}
-                                            </div>
-                                        </div>
-                                        <div style={{display:'flex'}}>
-                                            <div>
-                                                <Button
-                                                    buttonText="Delete"
-                                                    buttonType="ui negative basic button"
-                                                    buttonAction={()=>{this.deleteDiary(diary.id)}}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
+    return(
+        <div style={{margin:'5%'}}>
+            <div>
+                <Button 
+                    buttonType="positive ui button" 
+                    buttonText="Create New Diary" 
+                    // buttonAction={onCreateNewEntry}
+                />
             </div>
-        );
-    }
+            <div>
+                {currentUser&&
+                <>
+                    <Form
+                        inputContentRef={contentRef}
+                        inputTitleRef={titleRef}
+                        userID={currentUser.uid}
+                        // submitAction={onSubmitDiary}
+                    />
+                </>
+                }
+            </div>
+            <div style={{width:'100%', margin:'5%'}}>
+                {currentUser&& <DiaryCard
+                    uid={currentUser.uid}
+                />}
+            </div>
+        </div>
+    );
 }
 
 

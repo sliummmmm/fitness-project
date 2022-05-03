@@ -3,7 +3,7 @@ import Button from '../components/Button';
 import InputArea from '../components/InputArea';
 import Dropdown from '../components/Dropdown';
 import {db} from '../firebase';
-import {collection, addDoc, arrayRemove} from 'firebase/firestore';
+import {collection, addDoc } from 'firebase/firestore';
 import exerciseDB from '../api/exerciseDB';
 
 class Recordview extends React.Component{
