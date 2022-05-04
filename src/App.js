@@ -5,7 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import NavBar from './components/NavBar.js';
 import Recordview from './views/Recordview.js';
 import Diaryview from './views/Diaryview.js';
-import Reportview from './views/Recordview.js';
+import Reportview from './views/Reportview.js';
 import Profileview from './views/Profileview.js';
 
 const App = () =>{

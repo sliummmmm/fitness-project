@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react'
 import {db} from '../firebase';
-import {collection, getDocs, addDoc, deleteDoc, doc, where, query} from 'firebase/firestore';
+import {collection, getDocs, deleteDoc, doc, where, query} from 'firebase/firestore';
 import Button from './Button';
 
 const DiaryCard = (props) => {
@@ -11,7 +11,7 @@ const DiaryCard = (props) => {
         const getDiaries = async ()=>{
             const q = query(collection(db,"diaries"),where("UserID","==",props.uid));
             const data = await getDocs(q);
-            const entires = data.docs.map((doc)=>({...doc.data()}));
+            const entires = data.docs.map((doc)=>({...doc.data(),id:doc.id}));
             entires.map(
                 (doc)=>{
                     setDiaries(diaries=>[...diaries,doc]);
@@ -21,6 +21,12 @@ const DiaryCard = (props) => {
         getDiaries();
 
     },[])
+
+    const onDeleteDiary =async(id)=>{
+        const userDoc = doc(db, "diaries", id);
+        await deleteDoc(userDoc);
+        window.location.reload(false);
+    } 
 
     return (
         <div className="four wide column">
@@ -42,7 +48,7 @@ const DiaryCard = (props) => {
                                 <Button
                                     buttonText="Delete"
                                     buttonType="ui negative basic button"
-                                    // buttonAction={()=>{this.deleteDiary(diary.id)}}
+                                    buttonAction={()=> onDeleteDiary(diary.id)}
                                 />
                             </div>
                         </div>
