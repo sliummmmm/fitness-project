@@ -1,9 +1,10 @@
 import React, { useState, useRef }from 'react';
-import {db, useAuth} from '../firebase';
+import {db} from '../firebase';
+import { useAuth } from '../hooks/useAuth'
 import {collection, addDoc} from 'firebase/firestore';
 import Form from '../components/Form';
 import Button from '../components/Button';
-import DiaryCard from '../components/DiaryCard';
+import DiaryCard from '../components/cards/DiaryCard';
 import Modal from 'react-modal';
 
 const modalStyle = {
@@ -33,8 +34,6 @@ const Diaryview = () =>{
         await addDoc(collection(db,"diaries"), {Content: contentRef.current.value, Title: titleRef.current.value, UserID: currentUser.uid, PostOn: currentDate.toUTCString()});
         window.location.reload(false);
     }
-
-
 
     const onCreateNewEntry = () =>{
         setCreationOpen(true);

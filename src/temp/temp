@@ -1,0 +1,12 @@
+//render listItem
+                    exercises.map((exercise,index)=>{
+                        return(
+                            <div key={index}>
+                                <img className="ui avatar image" src={exercise.img}/>
+                                <div className="content">
+                                    <a className="header">{exercise.exercisename}</a>
+                                    <div className="description">{exercise.exerciseRep} Rep(s) for {exercise.groupNumber} Group(s)</div>
+                                </div>
+                            </div>
+                        )
+                    })

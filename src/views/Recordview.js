@@ -1,93 +1,128 @@
-import React from 'react';
+import React, { useState, useEffect, useRef}from 'react';
 import Button from '../components/Button';
 import InputArea from '../components/InputArea';
 import Dropdown from '../components/Dropdown';
 import {db} from '../firebase';
 import {collection, addDoc } from 'firebase/firestore';
+import { useAuth } from '../hooks/useAuth'
 import exerciseDB from '../api/exerciseDB';
+import List from '../components/List';
 
-class Recordview extends React.Component{
+const Recordview = ()=>{
+    const today = new Date(),
+    date = today.toUTCString();
 
-    constructor(props){
-        super(props);
+    const repRef = useRef();
+    const groupRef = useRef();
 
-        const today = new Date(),
-    
-        date = today.toUTCString();
+    const currentUser = useAuth();
 
-        this.state = {
-            exerciseId:'',
-            exerciseRep:'',
-            groupNumber:'',
-            exerciseList:[],
-            planList:[]
+    const [exercises, setExercises]=useState([]);
+    const [currentExercise, setCurrentExercise]=useState({});
+    const [dataList, setDataList]=useState([]);
+
+    useEffect(()=>{
+        const onApiCall = async ()=>{
+            const response=await exerciseDB.get();
+            response.data.map(
+                (res)=>{
+                    setDataList(dataList=>[...dataList,res])
+                })
+        }
+        onApiCall();
+    },[])
+
+    const handleChooseExercise= (id)=>{
+        const tempExercise = dataList.filter((data)=>Object.values(data).some(val => val.includes(id)));
+        setCurrentExercise(tempExercise[0]);
+    }
+
+    const handleAddExericse=()=>{
+        const existFlag=exercises.find((res)=> res.exerciseId === currentExercise.id)
+
+        if(!existFlag){
+            console.log(currentExercise);
+            setExercises(exercises=>[...exercises, {
+                exerciseId:currentExercise.id,
+                exercisename:currentExercise.name,
+                exerciseRep:Number(repRef.current.value),
+                groupNumber:Number(groupRef.current.value), 
+                exercisePart:currentExercise.target,
+                exerciseImg:currentExercise.gifUrl
+            }]);
+        }else{
+            setExercises(
+                exercises.map(
+                    (res)=>res.exerciseId===currentExercise.id && {...existFlag, exerciseRep: res.exerciseRep + Number(repRef.current.value), groupNumber: res.groupNumber + Number(groupRef.current.value)}
+                )
+            )
         }
     }
 
-    handleExercise = async (id)=>{
-        await this.setState({exerciseId:id});
-    }
-    //create a live list of exercise
-    collectExercise = async ()=> {
-        const tempList = this.state.exerciseList.find((res)=>{
-            return res.id === this.state.exerciseId
-        })
+    const handleRemoveExercise=(exercise)=>{
 
-        this.state.planList.push({"exercisename": tempList.name, "reps":this.state.exerciseRep, "groups":this.state.groupNumber, "img":tempList.gifUrl});
+            setExercises(exercises.filter((res)=>res.exerciseId !== exercise.exerciseId))
     }
 
-    OnExerciseSubmit= async ()=>{
-        await addDoc(collection(db,"exercises"), 
-        {exerciseId: this.state.exerciseId, exerciseRep: this.state.exerciseRep, groupNumber: this.state.groupNumber});
+    const onSubmitExercise= async ()=>{
+
+        exercises.map((exercise)=>{
+            addDoc(collection(db,"exercises"), 
+            {
+                date: date, 
+                exerciseId: exercise.exerciseId, 
+                exerciseRep: exercise.exerciseRep, 
+                groupNumber: exercise.groupNumber, 
+                uid: currentUser.uid
+            });
+        });
+
+        
         window.location.reload(false);
+
+
+        console.log(date);
+        console.log(currentUser);
     }
 
-    componentDidMount = async () =>{
-        const response=await exerciseDB.get();
-        this.setState(response.data.map((res)=>(this.state.exerciseList.push(res))));
-    }
-
-    render(){
-        return(
-            <div style={{width:'100%'}}>
-                <Dropdown
-                    options={this.state.exerciseList}
-                    onSelection={this.handleExercise}
-                />
+    return(
+        <div style={{width:'100%'}}>
+            <Dropdown
+                options={dataList}
+                onSelection={handleChooseExercise}
+            />
+            <div className='inputSection' style={{margin:'10px'}}>
                 <InputArea
                     placeHolder="rep(s)"
-                    inputAction={(e) => this.setState({ exerciseRep: e.target.value })}
+                    inputRef={repRef}
                     inputType="text" 
                 />
-                <div><i className="x icon"></i></div>
+                <span><i className='x icon'></i></span>
                 <InputArea
                     placeHolder="group(s)"
-                    inputAction={(e) => this.setState({ groupNumber: e.target.value })}
+                    inputRef={groupRef}
                     inputType="text" 
                 />
-                <Button
-                    buttonType="ui primary button"
-                    buttonText="Add"
-                    buttonAction={this.collectExercise}
-                />
-                <div className='ul list'>
-                    {
-                        this.state.planList.map((res,index)=>{
-                            return(
-                                <div key={index}>
-                                    <img className="ui avatar image" src={res.img}/>
-                                    <div className="content">
-                                        <a className="header">{res.exercisename}</a>
-                                        <div className="description">{res.reps} Rep(s) for {res.groups} Group(s)</div>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
             </div>
-        );
-    }
+
+            <Button
+                buttonType="ui primary button"
+                buttonText="Add"
+                buttonAction={handleAddExericse}
+            />
+            <div className='ul list'>
+                <List 
+                    listItems={exercises}
+                    removeAction={handleRemoveExercise}
+                />
+                <Button 
+                    buttonType="positive ui button"
+                    buttonText="That's all I have done!!"
+                    buttonAction={onSubmitExercise}
+                />
+            </div>
+        </div>
+    );
 }
 
 export default Recordview;

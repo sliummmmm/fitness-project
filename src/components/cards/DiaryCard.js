@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react'
-import {db} from '../firebase';
+import {db} from '../../firebase';
 import {collection, getDocs, deleteDoc, doc, where, query} from 'firebase/firestore';
-import Button from './Button';
+import Button from '../Button';
 
 const DiaryCard = (props) => {
 

@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useRef } from 'react';
-import { db, signUp, logIn, logOut, useAuth } from "../firebase";
-import {collection, getDocs, addDoc, deleteDoc, doc, where, query} from 'firebase/firestore';
-import Profilecard from "../components/Profilecard";
+import { signUp, logIn, logOut } from "../firebase";
+import { useAuth } from '../hooks/useAuth'
+import Profilecard from "../components/cards/Profilecard";
 import InputArea from "../components/InputArea";
 import Button from "../components/Button";
 

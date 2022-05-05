@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { db } from '../firebase';
+import { db } from '../../firebase';
 import { collection, getDocs, addDoc, doc, where, query, updateDoc } from 'firebase/firestore';
-import Button from './Button';
+import Button from '../Button';
 import Modal from 'react-modal';
-import { onIdTokenChanged } from 'firebase/auth';
 
 const modalStyle = {
   content: {
@@ -20,7 +19,7 @@ Modal.setAppElement('#root');
 
 const Profilecard = (props) => {
 
-  const [user, setUser] = useState({ });
+  const [user, setUser] = useState({});
   const [editOpen, setEditOpen]=useState(false);
   const usernameRef = useRef();
   const dobRef = useRef();
