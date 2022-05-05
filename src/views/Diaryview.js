@@ -31,7 +31,7 @@ const Diaryview = () =>{
     
     //TO-DO: use modal for diary creation
     const onSubmitDiary = async () =>{
-        await addDoc(collection(db,"diaries"), {Content: contentRef.current.value, Title: titleRef.current.value, UserID: currentUser.uid, PostOn: currentDate.toUTCString()});
+        await addDoc(collection(db,"diaries"), {Content: contentRef.current.value, Title: titleRef.current.value, UserID: currentUser.uid, PostOn: currentDate.toUTCString(), isDone: false});
         window.location.reload(false);
     }
 
@@ -48,7 +48,7 @@ const Diaryview = () =>{
             <div>
                 <Button 
                     buttonType="positive ui button" 
-                    buttonText="Create New Diary" 
+                    buttonText="Add a task!" 
                     buttonAction={onCreateNewEntry}
                 />
             </div>

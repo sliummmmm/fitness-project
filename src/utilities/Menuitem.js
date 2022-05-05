@@ -8,7 +8,7 @@ export const Menuitems = [
         url:'/report'
     },
     {
-        title:'Diary',
+        title:'To-Do',
         url:'/diary'
     },
     {
