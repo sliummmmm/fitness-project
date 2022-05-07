@@ -7,6 +7,7 @@ import Recordview from './views/Recordview.js';
 import Diaryview from './views/Diaryview.js';
 import Reportview from './views/Reportview.js';
 import Profileview from './views/Profileview.js';
+import Dietview from './views/Dietview.js';
 
 const App = () =>{
     return (
@@ -21,6 +22,7 @@ const App = () =>{
                     <Route path='/diary' exact component={Diaryview}/>
                     <Route path='/report' exact component={Reportview}/>
                     <Route path='/profile' exact component={Profileview}/>
+                    <Route path='/diet' exact component={Dietview}/>
                 </div>
             </BrowserRouter>
         </div>

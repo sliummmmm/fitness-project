@@ -1,7 +1,17 @@
 export const Menuitems = [
     {
         title:'Record',
-        url:'/record'
+        url:'/record',
+        subMenu:[
+            {
+                title:'Exercise',
+                url:'/record'
+            },
+            {
+                title:'Diet',
+                url:'/diet'
+            }
+        ]
     },
     {
         title:'Report',

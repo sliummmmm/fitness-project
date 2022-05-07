@@ -1,8 +1,7 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState,useEffect} from 'react';
 import {db} from '../../firebase';
 import {collection, getDocs, deleteDoc, doc, where, query, updateDoc} from 'firebase/firestore';
 import Button from '../Button';
-import { async } from '@firebase/util';
 
 const DiaryCard = (props) => {
 
@@ -63,12 +62,6 @@ const DiaryCard = (props) => {
                                     buttonType="ui positive basic button"
                                     buttonAction={()=> onMarkAsDone(diary.id, diary.isDone)}
                                 /> }
-                                {/* {diary.isDone && <Button
-                                    buttonText="Undo"
-                                    buttonType="ui button"
-                                    buttonAction={()=> onMarkAsDone(diary.id, diary.isDone)}
-                                />
-                                } */}
                                 <Button
                                     buttonText="Discard!"
                                     buttonType="ui negative basic button"

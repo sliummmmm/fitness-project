@@ -24,7 +24,7 @@ const Diaryview = () =>{
 
     const contentRef = useRef();
     const titleRef = useRef();
-    const [currentDate, setCurrentDate]=useState(new Date());
+    const [ currentDate ]=useState(new Date());
     const [creationOpen, setCreationOpen]=useState(false);
 
     const currentUser = useAuth();

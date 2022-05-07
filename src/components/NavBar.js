@@ -1,6 +1,7 @@
 import React from 'react'
 import { Menuitems } from '../utilities/Menuitem';
 import { Link } from 'react-router-dom';
+import SubMenu from './SubMenu';
 
 const NavBar = () =>{
 
@@ -22,9 +23,10 @@ const NavBar = () =>{
                             className="item" 
                             onMouseOver={onHoverOver} 
                             onMouseOut={onHoverOut} 
-                            to={menuitem.url}>
+                            to={menuitem.url}
+                        >
                             {menuitem.title}
-                            </Link>
+                        </Link>
                     )
                 })
             }
