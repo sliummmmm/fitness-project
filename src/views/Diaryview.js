@@ -2,7 +2,7 @@ import React, { useState, useRef }from 'react';
 import {db} from '../firebase';
 import { useAuth } from '../hooks/useAuth'
 import {collection, addDoc} from 'firebase/firestore';
-import Form from '../components/Form';
+import Form from '../components/forms/Form';
 import Button from '../components/Button';
 import DiaryCard from '../components/cards/DiaryCard';
 import Modal from 'react-modal';
@@ -58,20 +58,21 @@ const Diaryview = () =>{
                     onRequestClose={closeCreationEntry}
                     style={modalStyle}
                     contentLabel="Example Modal">
-                {currentUser&&
-                <>
-                    <Form
-                        inputContentRef={contentRef}
-                        inputTitleRef={titleRef}
-                        userID={currentUser.uid}
-                        submitAction={onSubmitDiary}
-                    />
-                </>
-                }
+                        {currentUser&&
+                        <>
+                            <Form
+                                inputContentRef={contentRef}
+                                inputTitleRef={titleRef}
+                                userID={currentUser.uid}
+                                submitAction={onSubmitDiary}
+                            />
+                        </>
+                        }
                 </Modal>
             </div>
             <div style={{width:'100%', margin:'5%'}}>
-                {currentUser&& <DiaryCard
+                {currentUser&& 
+                <DiaryCard
                     uid={currentUser.uid}
                 />}
             </div>

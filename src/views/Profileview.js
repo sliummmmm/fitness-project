@@ -96,18 +96,20 @@ const Profileview = () =>{
             </div>
             </>}
             <div className="profile">
-                { currentUser && <Profilecard 
+                { currentUser && 
+                <Profilecard 
                     uid={currentUser.uid}
                     email={currentUser.email}
                 /> }
             </div>
             <div className="logOutButton">
-                    { currentUser && <Button
-                    buttonType="ui red button"
-                    buttonText="Logout"
-                    buttonAction={handleLogOut}
-                    loadingCondition={ loading }
-                />}
+                    { currentUser && 
+                    <Button
+                        buttonType="ui red button"
+                        buttonText="Logout"
+                        buttonAction={handleLogOut}
+                        loadingCondition={ loading }
+                    />}
             </div>
         </div>
     );

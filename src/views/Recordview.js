@@ -1,25 +1,33 @@
 import React, { useState, useEffect, useRef}from 'react';
+
+import {db} from '../firebase';
+import {collection, addDoc, query } from 'firebase/firestore';
+
+import { useAuth } from '../hooks/useAuth'
+import CalorieNinja from '../api/calorieNinja';
+import exerciseDB from '../api/exerciseDB';
+
+import List from '../components/List';
 import Button from '../components/Button';
 import InputArea from '../components/InputArea';
 import Dropdown from '../components/Dropdown';
-import {db} from '../firebase';
-import {collection, addDoc } from 'firebase/firestore';
-import { useAuth } from '../hooks/useAuth'
-import exerciseDB from '../api/exerciseDB';
-import List from '../components/List';
+import ExerciseForm from '../components/forms/ExerciseForm';
+
 
 const Recordview = ()=>{
-    const today = new Date(),
-    date = today.toUTCString();
+    const BASE_URL = 'https://api.calorieninjas.com/v1/nutrition?query=';
+    const today = new Date(), date = today.toUTCString();
 
     const repRef = useRef();
     const groupRef = useRef();
+    const foodRef = useRef();
 
     const currentUser = useAuth();
 
-    const [exercises, setExercises]=useState([]);
-    const [currentExercise, setCurrentExercise]=useState({});
-    const [dataList, setDataList]=useState([]);
+    const [ exercises, setExercises ]=useState([]);
+    const [ currentExercise, setCurrentExercise ]=useState({});
+    const [ dataList, setDataList ]=useState([]);
+    const [ query, setQuery ]=useState('');
 
     useEffect(()=>{
         const onApiCall = async ()=>{
@@ -29,15 +37,17 @@ const Recordview = ()=>{
                     setDataList(dataList=>[...dataList,res])
                 })
         }
+
         onApiCall();
     },[])
 
-    const handleChooseExercise= (id)=>{
+    //Exercise Handlers
+    const handleChooseExercise= (id) =>{
         const tempExercise = dataList.filter((data)=>Object.values(data).some(val => val.includes(id)));
         setCurrentExercise(tempExercise[0]);
     }
 
-    const handleAddExericse=()=>{
+    const handleAddExericse= () =>{
         const existFlag=exercises.find((res)=> res.exerciseId === currentExercise.id)
 
         if(!existFlag){
@@ -75,48 +85,56 @@ const Recordview = ()=>{
                 uid: currentUser.uid
             });
         });
-
-        
         window.location.reload(false);
     }
+    //End of Exercise handlers
+
+    //Food handlers
+    const onSearchFood = async ()=>{
+        setQuery(foodRef.current.value);
+        const response = await CalorieNinja.get(BASE_URL+query);
+        console.log(response);
+    }
+ 
 
     return(
-        <div style={{width:'100%'}}>
-            <Dropdown
-                options={dataList}
-                onSelection={handleChooseExercise}
-            />
-            <div className='inputSection' style={{margin:'10px'}}>
-                <InputArea
-                    placeHolder="rep(s)"
-                    inputRef={repRef}
-                    inputType="text" 
-                />
-                <span><i className='x icon'></i></span>
-                <InputArea
-                    placeHolder="group(s)"
-                    inputRef={groupRef}
-                    inputType="text" 
-                />
-            </div>
 
-            <Button
-                buttonType="ui primary button"
-                buttonText="Add"
-                buttonAction={handleAddExericse}
-            />
-            <div className='ul list'>
-                <List 
-                    listItems={exercises}
-                    removeAction={handleRemoveExercise}
+        <div>
+            <div className='exerciseSection'>
+                <ExerciseForm
+                    dataList={dataList}
+                    onChoose={handleChooseExercise}
+                    rep={repRef}
+                    group={groupRef}
+                    onAdd={handleAddExericse}
+                />
+                <div className='ul list'>
+                    <List 
+                        listItems={exercises}
+                        removeAction={handleRemoveExercise}
+                    />
+                    <Button 
+                        buttonType="positive ui button"
+                        buttonText="That's all I have done!!"
+                        buttonAction={onSubmitExercise}
+                    />
+                </div>
+            </div>
+            <div className='foodSection'>
+                <InputArea
+                    placeHolder="Enter food name to search"
+                    inputRef={foodRef}
+                    inputType="text"
+                    inputAction={onSearchFood}
                 />
                 <Button 
                     buttonType="positive ui button"
-                    buttonText="That's all I have done!!"
-                    buttonAction={onSubmitExercise}
+                    buttonText="Search Food"
+                    buttonAction={onSearchFood}
                 />
             </div>
         </div>
+
     );
 }
 
