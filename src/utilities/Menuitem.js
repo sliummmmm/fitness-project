@@ -1,0 +1,28 @@
+export const Menuitems = [
+    {
+        title:'Record',
+        url:'/record',
+        subMenu:[
+            {
+                title:'Exercise',
+                url:'/record'
+            },
+            {
+                title:'Diet',
+                url:'/diet'
+            }
+        ]
+    },
+    {
+        title:'Report',
+        url:'/report'
+    },
+    {
+        title:'To-Do',
+        url:'/diary'
+    },
+    {
+        title:'Profile',
+        url:'/profile'
+    }
+]
