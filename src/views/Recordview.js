@@ -41,7 +41,6 @@ const Recordview = ()=>{
         const existFlag=exercises.find((res)=> res.exerciseId === currentExercise.id)
 
         if(!existFlag){
-            console.log(currentExercise);
             setExercises(exercises=>[...exercises, {
                 exerciseId:currentExercise.id,
                 exercisename:currentExercise.name,
@@ -79,10 +78,6 @@ const Recordview = ()=>{
 
         
         window.location.reload(false);
-
-
-        console.log(date);
-        console.log(currentUser);
     }
 
     return(

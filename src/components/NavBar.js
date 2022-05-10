@@ -26,6 +26,14 @@ const NavBar = () =>{
                             to={menuitem.url}
                         >
                             {menuitem.title}
+                            {menuitem.subMenu&&
+
+                            <SubMenu
+                                subMenuItems={menuitem.subMenu}
+                                onMouseOver={onHoverOver} 
+                                onMouseOut={onHoverOut} 
+                            />
+                            }
                         </Link>
                     )
                 })
