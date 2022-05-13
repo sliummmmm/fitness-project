@@ -1,19 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+const onHoverOver=(e)=>{
+  e.target.style.background='Gainsboro';
+}
 
-export const SubMenu = (props) => {
+const onHoverOut=(e)=>{
+  e.target.style.background= null;
+}
+
+const SubMenu = (props) => {
+
+  const [ subMenuItems, setSubMenuItems ] = useState([]);
+
+  // useEffect(()=>{
+  //   props.subMenuItems
+  // },[])
+
+  console.log(props.subMenuItems);
   return (
-  <div className="ui four item menu">
-        {/* {props.subMenuItems.map((item,index)=>{
+  <div className="ui secondary vertical menu">
+        {props.subMenuItems.map((item,index)=>{
           return(
             <Link
-              onMouseOver={props.onMouseOver} 
-              onMouseOut={props.onMouseOut} 
+              onMouseOver={onHoverOver}
+              onMouseOut={onHoverOut}
+              to={props.subURL}
+
+              class="item"
             >
+              {item.title}
             </Link>
           )
-        })} */}
+        })}
   </div>
 
   )

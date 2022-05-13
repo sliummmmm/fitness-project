@@ -8,6 +8,7 @@ import Diaryview from './views/Diaryview.js';
 import Reportview from './views/Reportview.js';
 import Profileview from './views/Profileview.js';
 import Dietview from './views/Dietview.js';
+import SubMenu from './components/SubMenu.js';
 
 const App = () =>{
     return (
