@@ -5,11 +5,11 @@ export const Menuitems = [
         subMenu:[
             {
                 title:'Exercise',
-                url:'/record'
+                url:'/record/exercise'
             },
             {
                 title:'Diet',
-                url:'/diet'
+                url:'/record/diet'
             }
         ]
     },

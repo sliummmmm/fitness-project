@@ -9,13 +9,11 @@ const onHoverOut=(e)=>{
   e.target.style.background= null;
 }
 
+const subMenuStyle = {
+
+}
+
 const SubMenu = (props) => {
-
-  const [ subMenuItems, setSubMenuItems ] = useState([]);
-
-  // useEffect(()=>{
-  //   props.subMenuItems
-  // },[])
 
   console.log(props.subMenuItems);
   return (
@@ -23,11 +21,12 @@ const SubMenu = (props) => {
         {props.subMenuItems.map((item,index)=>{
           return(
             <Link
+              key={index}
               onMouseOver={onHoverOver}
               onMouseOut={onHoverOut}
               to={props.subURL}
-
-              class="item"
+              style={subMenuStyle}
+              className="item"
             >
               {item.title}
             </Link>

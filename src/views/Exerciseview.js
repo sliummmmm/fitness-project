@@ -96,7 +96,6 @@ const Recordview = ()=>{
         console.log(response);
     }
  
-
     return(
 
         <div>
@@ -127,7 +126,7 @@ const Recordview = ()=>{
                     inputType="text"
                     inputAction={onSearchFood}
                 />
-                <Button 
+                <Button
                     buttonType="positive ui button"
                     buttonText="Search Food"
                     buttonAction={onSearchFood}

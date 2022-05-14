@@ -1,10 +1,16 @@
-import React, { useState, useEffect }from 'react';
+import React, { useState, useEffect, useRef }from 'react';
+import {db} from '../firebase';
+import { useAuth } from '../hooks/useAuth'
+import {collection, getDocs, deleteDoc, doc, where, query, updateDoc} from 'firebase/firestore';
 
 const Reportview = () =>{
 
   const currentDate = new Date();
+  const currentUser = useAuth();
   
-  const [displayDate, setDisplayDate] = useState(currentDate);
+  const [ displayDate, setDisplayDate ] = useState(currentDate);
+  const [ reports, setReports ] = useState([]);
+
 
   const handlePrevious = ()=>{
     const previousWeek = new Date(displayDate.getFullYear(), displayDate.getMonth(), displayDate.getDate() - 7);
