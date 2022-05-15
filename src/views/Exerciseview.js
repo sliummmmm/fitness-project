@@ -4,30 +4,27 @@ import {db} from '../firebase';
 import {collection, addDoc, query } from 'firebase/firestore';
 
 import { useAuth } from '../hooks/useAuth'
-import CalorieNinja from '../api/calorieNinja';
+
 import exerciseDB from '../api/exerciseDB';
 
 import List from '../components/List';
 import Button from '../components/Button';
-import InputArea from '../components/InputArea';
-import Dropdown from '../components/Dropdown';
+
 import ExerciseForm from '../components/forms/ExerciseForm';
 
 
 const Recordview = ()=>{
-    const BASE_URL = 'https://api.calorieninjas.com/v1/nutrition?query=';
     const today = new Date(), date = today.toUTCString();
 
     const repRef = useRef();
     const groupRef = useRef();
-    const foodRef = useRef();
+
 
     const currentUser = useAuth();
 
     const [ exercises, setExercises ]=useState([]);
     const [ currentExercise, setCurrentExercise ]=useState({});
     const [ dataList, setDataList ]=useState([]);
-    const [ query, setQuery ]=useState('');
 
     useEffect(()=>{
         const onApiCall = async ()=>{
@@ -46,7 +43,7 @@ const Recordview = ()=>{
         const tempExercise = dataList.filter((data)=>Object.values(data).some(val => val.includes(id)));
         setCurrentExercise(tempExercise[0]);
     }
-
+    //TO-DO:need to fix the add exercises bug
     const handleAddExericse= () =>{
         const existFlag=exercises.find((res)=> res.exerciseId === currentExercise.id)
 
@@ -88,13 +85,6 @@ const Recordview = ()=>{
         window.location.reload(false);
     }
     //End of Exercise handlers
-
-    //Food handlers
-    const onSearchFood = async ()=>{
-        setQuery(foodRef.current.value);
-        const response = await CalorieNinja.get(BASE_URL+query);
-        console.log(response);
-    }
  
     return(
 
@@ -118,19 +108,6 @@ const Recordview = ()=>{
                         buttonAction={onSubmitExercise}
                     />
                 </div>
-            </div>
-            <div className='foodSection'>
-                <InputArea
-                    placeHolder="Enter food name to search"
-                    inputRef={foodRef}
-                    inputType="text"
-                    inputAction={onSearchFood}
-                />
-                <Button
-                    buttonType="positive ui button"
-                    buttonText="Search Food"
-                    buttonAction={onSearchFood}
-                />
             </div>
         </div>
 

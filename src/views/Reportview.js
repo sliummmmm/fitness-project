@@ -24,13 +24,11 @@ const Reportview = () =>{
 
 
     return (
-      <div className="ui menu">
+      <div className="ui menu" style={{width:'450px', height:'30px'}}>
         <a className="item" onClick={handlePrevious}>Previous</a>
-        <div className='displayArea' style={{display:'flex', alignItems:'center'}}>
-          <div className='currentDate' style={{margin:'0 60px 0 60px'}}>
-          {displayDate.toUTCString()}
+          <div className='currentDate' style={{margin:'0 60px 0 60px',display:'flex', alignItems:'center'}}>
+            {displayDate.toUTCString()}
           </div>
-        </div>
         <div className="right menu">
           <a className="item" onClick={handleNext}>Next</a>
         </div>

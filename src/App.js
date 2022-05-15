@@ -8,13 +8,12 @@ import Diaryview from './views/Diaryview.js';
 import Reportview from './views/Reportview.js';
 import Profileview from './views/Profileview.js';
 import Dietview from './views/Dietview.js';
-import SubMenu from './components/SubMenu.js';
 
 const App = () =>{
     return (
         <div>
             <Router>
-                <div>
+                <div style={{display:'flex', flexDirection:'row'}}>
                     <NavBar />
                     <Switch>
                         <Route path='/' exact component={Profileview}/>
