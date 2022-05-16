@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import CalorieNinja from '../api/calorieNinja';
 import InputArea from '../components/InputArea';
 import Button from '../components/Button'
+import FoodCard from '../components/cards/FoodCard';
 
 export const Dietview = (props) => {
 
@@ -11,16 +12,34 @@ export const Dietview = (props) => {
 
   const [ query, setQuery ]=useState('');
   const [ foodList, setFoodList ]=useState([]);
+  const [ totalCalories, setTotalCalories ]=useState(0);
+  const [ searchToggler, setSearchToggler ]=useState(0);
 
-
-      //Food handlers
-      const onSearchFood = async ()=>{
-        setQuery(BASE_URL + foodRef.current.value);
+  useEffect(()=>{
+    const handleSearchFood = async ()=>{
+      if(query!==''){
         const response = await CalorieNinja.get(query);
-        console.log(response.data.items[0].name);
-        setFoodList(foodList=>[...foodList,response.data.items[0]]);
-        console.log(foodList);
+        setFoodList(foodList=>[...foodList, response.data.items[0]]);
+        setTotalCalories(totalCalories+response.data.items[0].calories)
+      }
     }
+    handleSearchFood();
+  },[searchToggler])
+
+  //Food handlers
+  const onSearchFood = ()=>{
+    const url= BASE_URL+foodRef.current.value;
+    setQuery(url);
+    setSearchToggler(searchToggler+1);
+  }
+
+  // const onCalculateCalories = ()=>{
+  //   foodList.map((food)=>{
+  //     setTotalCalories(totalCalories + Number(food.calories));
+  //   })
+  // }
+  console.log(totalCalories)
+  console.table(foodList);
 
   return (
     <div className='foodSection'>
@@ -31,11 +50,16 @@ export const Dietview = (props) => {
       />
       <Button
           buttonType="positive ui button"
-          buttonText="Search Food"
+          buttonText="Add Food"
           buttonAction={onSearchFood}
       />
       <div>
-        
+        <div className="ui visible message">
+          <p>You have eaten {totalCalories.toFixed(2)} calories</p>
+        </div>
+        <FoodCard
+          foodList={foodList}
+        />
       </div>
   </div>
   )
