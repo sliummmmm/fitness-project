@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef}from 'react';
 
 import {db} from '../firebase';
-import {collection, addDoc, query } from 'firebase/firestore';
+import {collection, addDoc } from 'firebase/firestore';
 
 import { useAuth } from '../hooks/useAuth'
 
@@ -18,7 +18,6 @@ const Recordview = ()=>{
 
     const repRef = useRef();
     const groupRef = useRef();
-
 
     const currentUser = useAuth();
 
@@ -38,14 +37,13 @@ const Recordview = ()=>{
         onApiCall();
     },[])
 
-    //Exercise Handlers
     const handleChooseExercise= (id) =>{
         const tempExercise = dataList.filter((data)=>Object.values(data).some(val => val.includes(id)));
         setCurrentExercise(tempExercise[0]);
     }
-    //TO-DO:need to fix the add exercises bug
+
     const handleAddExericse= () =>{
-        const existFlag=exercises.find((res)=> res.exerciseId === currentExercise.id)
+        const existFlag = exercises.find((exercise)=> exercise.exerciseId === currentExercise.id)
 
         if(!existFlag){
             setExercises(exercises=>[...exercises, {
@@ -59,7 +57,7 @@ const Recordview = ()=>{
         }else{
             setExercises(
                 exercises.map(
-                    (res)=>res.exerciseId===currentExercise.id && {...existFlag, exerciseRep: res.exerciseRep + Number(repRef.current.value), groupNumber: res.groupNumber + Number(groupRef.current.value)}
+                    (res)=>res.exerciseId===currentExercise.id ? {...res, exerciseRep: res.exerciseRep + Number(repRef.current.value), groupNumber: res.groupNumber + Number(groupRef.current.value)}:{...res}
                 )
             )
         }
@@ -67,7 +65,7 @@ const Recordview = ()=>{
 
     const handleRemoveExercise=(exercise)=>{
 
-            setExercises(exercises.filter((res)=>res.exerciseId !== exercise.exerciseId))
+        setExercises(exercises.filter((res)=>res.exerciseId !== exercise.exerciseId))
     }
 
     const onSubmitExercise= async ()=>{
@@ -84,7 +82,6 @@ const Recordview = ()=>{
         });
         window.location.reload(false);
     }
-    //End of Exercise handlers
  
     return(
 

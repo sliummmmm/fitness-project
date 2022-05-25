@@ -41,6 +41,7 @@ const NavBar = () =>{
                                     onMouseOver={onHoverOver} 
                                     onMouseOut={onHoverOut}
                                 >
+                                {/* TO-DO:fix the style of submenu */}
                                     <SubMenu.Menu>
                                         {menuitem.subMenu.map((sub,index)=>{
                                             return(
